@@ -1,10 +1,9 @@
 from django.shortcuts import render
-from urllib.parse import parse_qs
-from random import randint, sample
+from random import sample
 
 
 main_n = 4   # count of numbers that will be accepted
-turn_count = 0
+turn_count = 1
 info_table = []
 
 def guess_number(secret, actual):
@@ -40,11 +39,13 @@ def guess_number(secret, actual):
         secret_nums[:] = generate_numbers(main_n)
         print(f'Secret numbers: {secret_nums}')
         to_response['win_text'] = f'You got it right! You guessed all {main_n} numbers! \nGame over!'
-        turn_count = 0
+        info_table.append(f'Turn: {turn_count}. Bulls: {bulls}, Cows: {cows - bulls}')
+        turn_count = 1
     else:
         to_response['bulls'] = bulls
         to_response['cows'] = cows - bulls
         info_table.append(f'Turn: {turn_count}. Bulls: {bulls}, Cows: {cows - bulls}')
+        turn_count += 1
 
     return to_response
 
@@ -61,25 +62,25 @@ def main_page(request):
 
     if request.GET:
         numbers_lst_of_str = request.GET.get("guessing").split()
-        try:
-            for i in range(len(numbers_lst_of_str)):
-                actual_nums.append(int(numbers_lst_of_str[i]))
-        except ValueError:
-            to_response["warning"] = "Please enter integers only"
+        if len(numbers_lst_of_str) != main_n:
+            to_response['warning'] = f'Please enter {main_n} digits'
         else:
-            to_response = guess_number(secret_nums, actual_nums)
-            turn_count += 1
+            try:
+                for i in range(len(numbers_lst_of_str)):
+                    actual_nums.append(int(numbers_lst_of_str[i]))
+            except ValueError:
+                to_response["warning"] = "Please enter integers only"
+            else:
+                to_response = guess_number(secret_nums, actual_nums)
 
     return render(request, 'index.html', to_response)
+
 
 def info_page(request):
     global info_table
     to_response = {}
-    str_to_attach = ''
 
-    for i in info_table:
-        str_to_attach += f'\n {i}'
+    for i in range(len(info_table)):
+        to_response[f'current_{i}'] = info_table[i]
 
-    to_response['current'] = str_to_attach
-
-    return render(request, 'info.html', to_response)
+    return render(request, 'info.html', {'to_response': to_response})
