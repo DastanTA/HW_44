@@ -1,0 +1,29 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HW_44</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="container">
+    <h3>Guess {{main_n}} numbers. Enter them separated with spaces</h3>
+    <form action="">
+        {% csrf_token %}
+        <div class="numbers">
+            <input required type="number" name="first_number">
+            <input type="submit" value="Send">
+        </div>
+    </form>
+
+    <div><p class="warning">{{warning}}</p></div>
+
+    <div><p>Bulls: {{bulls}}, Cows: {{cows}}</p></div>
+
+</div>
+</body>
+</html>
