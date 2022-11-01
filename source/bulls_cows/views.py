@@ -62,8 +62,5 @@ def main_page(request):
             to_response["warning"] = "Please enter integers only"
         else:
             to_response = guess_number(secret_nums, actual_nums)
-            print(to_response)
-    else:
-        to_response["warning"] = "Please, enter digits. Don't send empty form!"
 
     return render(request, 'index.html', to_response)
