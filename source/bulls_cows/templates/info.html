@@ -11,7 +11,9 @@
 </head>
 <body>
 <div class="container">
-    {{current}}
+    {% for key, value in to_response.items():%}
+    <p>{{value}}</p>
+    {% endfor %}
 
 </div>
 </body>
