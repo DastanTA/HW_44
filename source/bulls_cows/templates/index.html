@@ -15,12 +15,13 @@
     <form action="">
         {% csrf_token %}
         <div class="numbers">
-            <input required type="number" name="first_number">
+            <input required type="text" name="guessing">
             <input type="submit" value="Send">
         </div>
     </form>
 
     <div><p class="warning">{{warning}}</p></div>
+    <div><p class="win">{{win_text}}</p></div>
 
     <div><p>Bulls: {{bulls}}, Cows: {{cows}}</p></div>
 
